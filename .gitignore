@@ -1,0 +1,16 @@
+.local/
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.env
+dist/
+build/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+# keep .terraform.lock.hcl committed
