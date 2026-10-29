@@ -24,7 +24,7 @@ permissions:
 concurrency: terraform
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-2' }}
   TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
   TF_IN_AUTOMATION: "true"
 

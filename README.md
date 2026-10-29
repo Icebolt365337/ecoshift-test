@@ -68,7 +68,7 @@ dashboard/    Streamlit app (talks to the API only)
 skills/       agent skill (SKILL.md) for the CLI
 fixtures/     example API responses, generated from the real code (make fixtures)
 infra/        Terraform: bootstrap, base, serving, training, freeplan-check
-scripts/      tf.sh, run_pipeline.sh, make_fixtures.py
+scripts/      deploy.sh, tf.sh, run_pipeline.sh, make_fixtures.py
 docs/         runbook (bring up, demo, tear down)
 ```
 
@@ -136,13 +136,18 @@ proper rolling-origin backtest once the real model exists.
 
 ## Deploying to AWS
 
-See [docs/runbook.md](docs/runbook.md). Short version: check the free plan allows ECS Fargate and
-ALBs (`infra/freeplan-check`), apply `infra/bootstrap` once, set four repository variables, then
-run the **deploy** workflow. Terraform runs only from GitHub Actions.
+See [docs/runbook.md](docs/runbook.md). Short version:
+
+1. Use the region your AWS project allows (default `us-east-2`). AWS blocks workloads in other regions.
+2. Check the account allows ECS Fargate and ALBs (`infra/freeplan-check`).
+3. Apply `infra/bootstrap` once for the state bucket, set `TF_STATE_BUCKET`, then run `scripts/deploy.sh up`.
+
+The Free plan's managed policy blocks GitHub OIDC, so the default path deploys from one machine.
+The GitHub workflows are included for accounts where OIDC is allowed.
 
 Cost: the ALB bills by the hour even with no tasks, and an ALB plus a few small Fargate tasks is
-roughly $0.06-0.08 per hour (check the AWS pricing calculator). Don't leave the serving stack up;
-use the nightly-destroy workflow and tear everything down after the demo.
+roughly $0.06-0.08 per hour (check the AWS pricing calculator). Run `scripts/deploy.sh down-serving`
+whenever you stop working, and `down-all` after the demo.
 
 ## What has and has not been verified
 

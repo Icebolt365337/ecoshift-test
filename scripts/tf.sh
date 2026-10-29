@@ -12,5 +12,5 @@ shift
 cd "$(dirname "$0")/../infra/${stack}"
 terraform init -input=false -reconfigure \
   -backend-config="bucket=${TF_STATE_BUCKET}" \
-  -backend-config="region=${AWS_REGION:-us-east-1}" >/dev/null
+  -backend-config="region=${AWS_REGION:-us-east-2}" >/dev/null
 terraform "$@"
